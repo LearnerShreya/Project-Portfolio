@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
 import ProjectCard from '@/components/ProjectCard';
@@ -19,9 +20,7 @@ export default function Home() {
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('darkMode');
-    if (savedTheme === 'enabled') {
-      setIsDarkMode(true);
-    }
+    if (savedTheme === 'enabled') setIsDarkMode(true);
   }, []);
 
   useEffect(() => {
@@ -34,45 +33,40 @@ export default function Home() {
     }
   }, [isDarkMode]);
 
-  const toggleTheme = () => {
-    setIsDarkMode(!isDarkMode);
-  };
+  const toggleTheme = () => setIsDarkMode(!isDarkMode);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
-  setIsSubmitting(true);
-  setSubmitStatus('idle');
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setSubmitStatus('idle');
 
-  try {
-    const res = await fetch('/api/contact', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(formData)
-    });
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      });
 
-    if (res.ok) {
-      setSubmitStatus('success');
-      setFormData({ name: '', email: '', message: '' });
-      setTimeout(() => setSubmitStatus('idle'), 3000);
-    } else {
+      if (res.ok) {
+        setSubmitStatus('success');
+        setFormData({ name: '', email: '', message: '' });
+        setTimeout(() => setSubmitStatus('idle'), 3000);
+      } else {
+        setSubmitStatus('error');
+        setTimeout(() => setSubmitStatus('idle'), 3000);
+      }
+    } catch {
       setSubmitStatus('error');
       setTimeout(() => setSubmitStatus('idle'), 3000);
+    } finally {
+      setIsSubmitting(false);
     }
-  } catch (error) {
-    setSubmitStatus('error');
-    setTimeout(() => setSubmitStatus('idle'), 3000);
-  } finally {
-    setIsSubmitting(false);
-  }
-};
+  };
 
   const projects = [
     {
@@ -178,7 +172,7 @@ const handleSubmit = async (e: React.FormEvent) => {
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
           >
-            <img src="/pic shreya.png" alt="Shreya Singh" />
+            <Image src="/pic shreya.png" alt="Shreya Singh" width={400} height={400} />
           </motion.div>
         </div>
       </section>
@@ -233,7 +227,7 @@ const handleSubmit = async (e: React.FormEvent) => {
               viewport={{ once: true }}
             >
               <div className="icon-container">
-                <img src={service.icon} alt={`${service.title} Icon`} />
+                <Image src={service.icon} alt={`${service.title} Icon`} width={80} height={80} />
               </div>
               <h3>{service.title}</h3>
               <p>{service.description}</p>
@@ -324,7 +318,6 @@ const handleSubmit = async (e: React.FormEvent) => {
             ></textarea>
           </div>
           
-          {/* Status Messages */}
           {submitStatus === 'success' && (
             <motion.div 
               className="success-message"
@@ -340,7 +333,7 @@ const handleSubmit = async (e: React.FormEvent) => {
                 fontWeight: '600'
               }}
             >
-              ✅ Message sent successfully! I'll get back to you soon.
+              ✅ Message sent successfully! I&apos;ll get back to you soon.
             </motion.div>
           )}
           
@@ -421,7 +414,7 @@ const handleSubmit = async (e: React.FormEvent) => {
             <i className="fab fa-instagram"></i>
           </a>
           <a href="mailto:shreya.official.2.25@gmail.com" target="_blank" rel="noopener noreferrer">
-            <i className="fab fa-envelope"></i>
+            <i className="fas fa-envelope"></i>
           </a>
         </div>
         <p>© 2024 Developed with ❤️ by Shreya Singh.</p>
