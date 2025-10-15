@@ -9,7 +9,7 @@ import ProjectCard from '@/components/ProjectCard';
 import SkillBar from '@/components/SkillBar';
 
 export default function Home() {
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(true);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
